@@ -35,18 +35,22 @@ detect them or simply supply an array of classes to the builder.
 
     If specifying an explicit array of Test classes:
 
-        new Atam4j.Atam4jBuilder(jerseyEnvironment)     
+        Atam4j atam4j = new Atam4j.Atam4jBuilder(jerseyEnvironment)     
             .withTestClasses(HelloWorldTest.class) 
             .build()      
             .initialise();
             
     If using `@Monitor` annotations to auto-detect test classes:            
             
-        new Atam4j.Atam4jBuilder(jerseyEnvironment)      
+        Atam4j atam4j = new Atam4j.Atam4jBuilder(jerseyEnvironment)      
             .build()      
             .initialise();     
                    
-    where `jerseyEnvironment` is an object of type `io.dropwizard.jersey.setup.JerseyEnvironment`                   
+    where `jerseyEnvironment` is an object of type `io.dropwizard.jersey.setup.JerseyEnvironment`
+    
+    Use the `stop()` method to halt the test runs:
+    
+        atam4j.stop()
 
 4. Run your app and observe the status of the acceptance tests reported by the `/tests` endpoint.
 

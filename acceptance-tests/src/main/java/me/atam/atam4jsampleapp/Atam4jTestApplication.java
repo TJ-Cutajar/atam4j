@@ -2,6 +2,7 @@ package me.atam.atam4jsampleapp;
 
 import com.google.common.io.Resources;
 import io.dropwizard.Application;
+import io.dropwizard.lifecycle.Managed;
 import io.dropwizard.setup.Bootstrap;
 import io.dropwizard.setup.Environment;
 import me.atam.atam4j.Atam4j;
@@ -26,12 +27,24 @@ public class Atam4jTestApplication extends Application<ApplicationConfiguration>
 
     @Override
     public void run(final ApplicationConfiguration configuration, final Environment environment) throws Exception {
-        new Atam4j.Atam4jBuilder(environment.jersey())
+        Atam4j atam4j = new Atam4j.Atam4jBuilder(environment.jersey())
                 .withUnit(TimeUnit.MILLISECONDS)
                 .withInitialDelay(configuration.getInitialDelayInMillis())
                 .withPeriod(5000)
                 .withTestClasses(configuration.getTestClasses())
                 .build()
                 .initialise();
+
+        environment.lifecycle().manage(new Managed() {
+            @Override
+            public void start() throws Exception {
+
+            }
+
+            @Override
+            public void stop() throws Exception {
+                atam4j.stop();
+            }
+        });
     }
 }

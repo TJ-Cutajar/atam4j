@@ -28,9 +28,14 @@ public class Atam4j {
         this.acceptanceTestsRunnerTaskScheduler = acceptanceTestsRunnerTaskScheduler;
     }
 
-    public void initialise() {
+    public Atam4j initialise() {
         acceptanceTestsRunnerTaskScheduler.scheduleAcceptanceTestsRunnerTask(acceptanceTestsState);
         jerseyEnvironment.register(new TestStatusResource(testRunListener));
+        return this;
+    }
+
+    public void stop() {
+        acceptanceTestsRunnerTaskScheduler.shutdown();
     }
 
     public static class Atam4jBuilder {

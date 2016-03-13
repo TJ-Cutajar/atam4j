@@ -40,4 +40,8 @@ public class AcceptanceTestsRunnerTaskScheduler {
                 period,
                 unit);
     }
+
+    public void shutdown() {
+        scheduler.shutdownNow();
+    }
 }
