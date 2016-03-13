@@ -53,6 +53,26 @@ public class Atam4jIntegrationTest {
         checkThatWeEventuallyGetSuccess(value);
     }
 
+    @Test
+    public void givenHealthCheckManagerWithPassingTest_whenRunOnce_thenTestsAreHealthy() throws Exception{
+
+        JerseyEnvironment jerseyEnvironment = mock(JerseyEnvironment.class);
+
+        ArgumentCaptor<TestStatusResource> argumentCaptor = ArgumentCaptor.forClass(TestStatusResource.class);
+
+        new Atam4j.Atam4jBuilder(jerseyEnvironment)
+                .withTestClasses(PassingTest.class)
+                .withInitialDelay(0)
+                .runOnce()
+                .build()
+                .initialise();
+        verify(jerseyEnvironment).register(argumentCaptor.capture());
+
+        TestStatusResource value = argumentCaptor.getValue();
+        assertNotNull(value);
+
+        checkThatWeEventuallyGetSuccess(value);
+    }
 
     private void checkThatWeEventuallyGetSuccess(TestStatusResource resource) {
         PollingPredicate<TestsRunResult> resultPollingPredicate = new PollingPredicate<>(UnitTestTimeouts.MAX_ATTEMPTS, UnitTestTimeouts.RETRY_POLL_INTERVAL_IN_MILLIS,

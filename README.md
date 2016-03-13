@@ -46,7 +46,14 @@ detect them or simply supply an array of classes to the builder.
             .build()      
             .initialise();     
                    
-    where `jerseyEnvironment` is an object of type `io.dropwizard.jersey.setup.JerseyEnvironment`                   
+    where `jerseyEnvironment` is an object of type `io.dropwizard.jersey.setup.JerseyEnvironment`
+    
+    You can perform a one-off test run by using:
+    
+            new Atam4j.Atam4jBuilder(jerseyEnvironment)
+                .runOnce()
+                .build()      
+                .initialise();
 
 4. Run your app and observe the status of the acceptance tests reported by the `/tests` endpoint.
 

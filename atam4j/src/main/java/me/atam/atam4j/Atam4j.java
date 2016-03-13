@@ -40,6 +40,7 @@ public class Atam4j {
         private long period = 300;
         private TimeUnit unit = TimeUnit.SECONDS;
         private JerseyEnvironment jerseyEnvironment;
+        private boolean runOnce = false;
 
         public Atam4jBuilder(JerseyEnvironment jerseyEnvironment) {
             this.jerseyEnvironment = jerseyEnvironment;
@@ -65,6 +66,11 @@ public class Atam4j {
             return this;
         }
 
+        public Atam4jBuilder runOnce() {
+            this.runOnce = true;
+            return this;
+        }
+
         public Atam4j build() {
             TestRunListener testRunListener = new TestRunListener();
             return new Atam4j(jerseyEnvironment, testRunListener,
@@ -73,6 +79,7 @@ public class Atam4j {
                         initialDelay,
                         period,
                         unit,
+                        runOnce,
                         testRunListener));
         }
 

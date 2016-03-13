@@ -13,6 +13,7 @@ public class AcceptanceTestsRunnerTaskScheduler {
     private final long initialDelay;
     private final long period;
     private final TimeUnit unit;
+    private final boolean runOnce;
     private final ScheduledExecutorService scheduler;
     private final TestRunListener testRunListener;
 
@@ -20,11 +21,13 @@ public class AcceptanceTestsRunnerTaskScheduler {
                                               final long initialDelay,
                                               final long period,
                                               final TimeUnit unit,
+                                              final boolean runOnce,
                                               final TestRunListener testRunListener) {
         this.testClasses = testClasses;
         this.initialDelay = initialDelay;
         this.period = period;
         this.unit = unit;
+        this.runOnce = runOnce;
         this.testRunListener = testRunListener;
         this.scheduler = Executors.newSingleThreadScheduledExecutor(
                 new ThreadFactoryBuilder()
@@ -34,10 +37,11 @@ public class AcceptanceTestsRunnerTaskScheduler {
     }
 
     public void scheduleAcceptanceTestsRunnerTask(final AcceptanceTestsState acceptanceTestsState) {
-        scheduler.scheduleAtFixedRate(
-                new AcceptanceTestsRunnerTask(acceptanceTestsState, testRunListener, testClasses),
-                initialDelay,
-                period,
-                unit);
+        final AcceptanceTestsRunnerTask task = new AcceptanceTestsRunnerTask(acceptanceTestsState, testRunListener, testClasses);
+        if (runOnce) {
+            scheduler.schedule(task, initialDelay, unit);
+        } else {
+            scheduler.scheduleAtFixedRate(task, initialDelay, period, unit);
+        }
     }
 }
