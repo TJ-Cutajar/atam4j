@@ -30,7 +30,7 @@ public class Atam4j {
 
     public void initialise() {
         acceptanceTestsRunnerTaskScheduler.scheduleAcceptanceTestsRunnerTask(acceptanceTestsState);
-        jerseyEnvironment.register(new TestStatusResource(testRunListener));
+        jerseyEnvironment.register(new TestStatusResource(acceptanceTestsRunnerTaskScheduler, testRunListener));
     }
 
     public static class Atam4jBuilder {

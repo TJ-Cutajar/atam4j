@@ -3,6 +3,7 @@ package me.atam.atam4jdomain;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.Collection;
+import java.util.Collections;
 
 public class TestsRunResult {
 
@@ -18,6 +19,11 @@ public class TestsRunResult {
     public TestsRunResult(final Collection<IndividualTestResult> tests) {
         this.tests = tests;
         this.status = buildStatus(tests);
+    }
+
+    public TestsRunResult(final Status status) {
+        this.tests = Collections.emptyList();
+        this.status = status;
     }
 
     public Collection<IndividualTestResult> getTests() {
@@ -43,7 +49,8 @@ public class TestsRunResult {
         TOO_EARLY("Too early to tell - tests not complete yet"),
         CATEGORY_NOT_FOUND("This category does not exist"),
         ALL_OK("All is A OK!"),
-        FAILURES("Failues");
+        FAILURES("Failures"),
+        EXECUTION_EXCEPTION("Failed to run tests. Either the test run aborted or the thread was interrupted");
 
         private final String message;
 

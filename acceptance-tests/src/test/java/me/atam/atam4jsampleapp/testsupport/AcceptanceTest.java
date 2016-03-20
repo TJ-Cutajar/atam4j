@@ -7,6 +7,7 @@ import me.atam.atam4jsampleapp.ApplicationConfiguration;
 import org.glassfish.jersey.client.JerseyClientBuilder;
 import org.junit.After;
 
+import javax.ws.rs.client.Client;
 import javax.ws.rs.core.Response;
 
 import static me.atam.atam4jsampleapp.testsupport.AcceptanceTestTimeouts.MAX_ATTEMPTS;
@@ -14,6 +15,8 @@ import static me.atam.atam4jsampleapp.testsupport.AcceptanceTestTimeouts.RETRY_P
 import static org.junit.Assert.assertTrue;
 
 public abstract class AcceptanceTest {
+
+    private static final Client client = new JerseyClientBuilder().build();
 
     protected DropwizardTestSupport<ApplicationConfiguration> dropwizardTestSupportAppConfig;
 
@@ -23,10 +26,15 @@ public abstract class AcceptanceTest {
     }
 
     public Response getTestRunResultFromServer(String testsURI){
-        return new JerseyClientBuilder().build().target(
-                testsURI)
-                .request()
-                .get();
+        return client.target(testsURI)
+                     .request()
+                     .get();
+    }
+
+    public Response performTestRun() {
+        return client.target(getTestsURI() + "/run")
+                     .request()
+                     .get();
     }
 
     public String getTestsURI() {
